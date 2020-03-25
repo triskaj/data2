@@ -5,11 +5,15 @@
 \usepackage{amsthm}
 \usepackage{amsmath}
 
-\newtheorem{definition}{Definice}
-\newtheorem*{remark}{Poznámka}
 \newtheorem*{corollary}{Důsledek}
 \renewcommand*{\proofname}{Důkaz}
 \newtheorem{theorem}{Věta}
+
+\theoremstyle {definition}
+\newtheorem{definition}{Definice}
+\newtheorem{example}{Příklad}
+\newtheorem*{remark}{Poznámka}
+\newtheorem{exercise}{Cvičení}
 
 \DeclareMathOperator{\Mod}{Mod}
 
@@ -244,5 +248,340 @@ jedna báze.
 Když už víme, že báze vždy existuje, přesuneme pozornost na její
 velikost vzhledem k počtu FZ. Z předchozího textu vyplývá, že se
 budeme snažit najít bázi ekvivalentní, ale co nejmenší.
+
+První ideou je ostranit z teorie nějaké FZ tak, že je pořád
+bází. Pokud už nejde zmenšit je tzv. neredundantní.
+
+\begin{definition}
+  Teorie $T$ je \underline{neredundantní báze} relace $\mathcal{D}$,
+  pokud $T$ je báze $\mathcal{D}$ a pro každou $T' \subset T$ platí,
+  že $T'$ není báze $\mathcal{D}$.
+\end{definition}
+
+Tato definice má i ekvivalentní formulaci, která vede na jednoduchý
+algoritmus transformace báze na bázi neredundandní.
+
+\begin{theorem}[o charakterizaci neredundantní báze]
+  Teorie $T$ je neredundantní báze relace $\mathcal{D}$ právě, když
+  $T$ je báze a žádná $A \Rightarrow B \in T$ sémanticky neplyne z
+  $T \setminus \{A \Rightarrow B \}$.
+\end{theorem}
+
+\begin{proof}
+  "$\Rightarrow$": Vezmeme libovolnou $A \Rightarrow B \in T$. Z
+  předpokladu, že $T$ je báze, vyplývá, že $T \setminus \{A
+  \Rightarrow B \}$ není báze, a tedy není ekvivalentní $T$. Pak
+  existuje model $T \setminus \{A \Rightarrow B \}$, který není
+  modelem $T$, a tedy není v něm pravdivá $A\Rightarrow B$, což
+  znamená, že $T \setminus \{A \Rightarrow B \} \not\models A
+  \Rightarrow B$.\\
+  
+  "$\Leftarrow$": Vezmeme libovolnou $T' \subset T$. Pak nutně
+  existuje $A \Rightarrow B \in T$ tak, že $A \Rightarrow B \notin
+  T'$, a díky předpokladu máme $T' \not\models A \Rightarrow B$. Tudíž
+  $T$ a $T'$ nejsou sémanticky ekvivalentní.
+\end{proof}
+
+K tomu, abychom definovali konkrétní neredundantní bázi využijeme
+následující množinu.
+
+\begin{definition}
+  Pro relaci $\mathcal{D}$ nad $R$ uvažujeme množinu $P_{\mathcal{D}}
+  \subseteq 2^R$, která je definovaná předpisem:
+  
+  $$P_{\mathcal{D}} = \{ P \neq C_{\mathcal{D}}(P) \mid \forall Q \in
+  P_{\mathcal{D}}: \text{ pokud } Q \subset P \text{, pak }
+  C_{\mathcal{D}}(Q) \subseteq P \}.$$
+\end{definition}
+
+Prvkům z této množiny se někdy říká pseudo-uzávěry. Koresponduje to s
+tím, že to nejsou sice uzavřené množiny, ale mají uzávěrovou vlastnost
+vzhledem ke všem ostatním prvkům z této množiny.
+
+\begin {definition}
+  \underline {GD bází} $\mathcal D$ nazveme teorii definovanou
+  následujícím předpisem:
+  $$GD(\mathcal D)= \{P \Rightarrow C_{\mathcal{D}}(P) \mid P \in
+  P_{\mathcal{D}}\}.$$
+\end {definition}
+
+\begin {remark}
+  Teorie je nazvaná podle francouzkých vědců Guigues a Duquenne, kteří
+  ji prvně definovali v kontextu formální konceptuální analýzy.
+\end {remark}
+
+\begin{theorem}
+  GD báze relace $\mathcal D$ je bází $\mathcal D$.
+\end{theorem}
+\begin{proof}
+  $GD(\mathcal D)$ je báze právě, když $C_{\mathcal{D}}$ a
+  $[\dots]_{GD(\mathcal D)}$ mají stejné pevné body, tedy $M =
+  C_{\mathcal{D}}(M)$ právě, když $M \in \mathcal{M}_{GD(\mathcal D)}$
+  pro každou $M\subseteq R$.\\
+  
+  "$\Rightarrow$": Víme, že $T' = \{A \Rightarrow C_{\mathcal{D}}(A)
+  \mid A \subseteq R\}$ je báze a vidíme, že $T \subseteq T'$, z čehož
+  vyplývá, že $\mathcal{M}_{T'} \subseteq \mathcal{M}_T$. Nechť $M =
+  C_{\mathcal{D}}(M)$. Pak $M \in \mathcal{M}_{T'}$, a tedy z
+  předchozího $M \in \mathcal{M}_T$.\\
+  
+  "$\Leftarrow$": Nechť $M \in \mathcal{M}_T$, pak $\mathcal{D}_M
+  \models P \Rightarrow C_{\mathcal{D}}(P)$ pro každou $P \in
+  P_{\mathcal{D}}$, což znamená, že pokud $P \subseteq M$, pak
+  $C_{\mathcal{D}}(P) \subseteq M$. Nyní sporem dokážeme, že $M =
+  C_{\mathcal{D}}(M)$. Nechť tedy $M \neq C_{\mathcal{D}}(M)$. Pak
+  díky předchozímu je $M \in P_{\mathcal{D}}$, a tedy z předpokladu
+  plyne, že $\mathcal{D}_M \models M \Rightarrow
+  C_{\mathcal{D}}(M)$. Jelikož ale $M \subseteq M$, pak
+  $C_{\mathcal{D}}(M) \subseteq M$. Navíc z extenzivity uzávěrového
+  operátoru $C_{\mathcal{D}}$ máme $M \subseteq C_{\mathcal{D}}(M)$,
+  což dohromady dává $M = C_{\mathcal{D}}(M)$.
+\end{proof}
+
+\begin {theorem}
+  GD báze relace $\mathcal D$ je neredundantní bází $\mathcal D$.
+\end {theorem}
+\begin {proof}
+  Vezmeme libovolnou $T\subset GD(\mathcal D)$ a ukážeme, že $T$ není
+  báze. Díky předpokladu existuje $P \Rightarrow C_{\mathcal{D}}(P)\in
+  GD(\mathcal D)$, která není v $T$. Z definice $P_{\mathcal{D}}$ je
+  vidět, že $\mathcal{D}_P$ je modelem $T$. Jelikož však není modelem
+  $GD(\mathcal D)$, nemohou být $T$ a $GD(\mathcal D)$ sémanticky
+  ekvivalentní, což dohromady s tím, že $GD(\mathcal D)$ je báze
+  $\mathcal D$ dává, že $T$ není báze $\mathcal D$.
+\end {proof}
+
+Jako motivaci pro zbytek sekce vezmeme následující příklad.
+
+\begin {example}
+  Mějme $R=\{a,b,c\}$ a teorie $T_1=\{\{a\}\Rightarrow \{b,c\}\}$ a
+  $T_2=\{\{a\}\Rightarrow \{b\}, \{a\}\Rightarrow \{b\}\}$. Při
+  bližším prozkoumání zjistíme, že $T_1\equiv T_2$ a navíc, že jsou
+  obě neredundantní, ale $|T_1| < |T_2|$.
+\end {example}
+
+Z příkladu je patrné, že kompaktnější verze teorií nelze získat pouze
+ostraněním redundantních FZ. Jelikož chceme najít teorii s nejmenší
+kardinalitou, definujeme následující pojem.
+
+\begin{definition}
+  Pokud teorie $T$ je báze $\mathcal{D}$ a pro libovolnou $T'$, která je také
+  bází $\mathcal{D}$, platí, že $|T| \leq |T'|$, pak se $T$ nazývá
+  \underline{minimální báze} $\mathcal{D}$.
+\end{definition}
+
+Ukazuje se, že GD báze je také minimální bazí, ale abychom byli
+schopni to potvrdit, je potřeba prozkoumat vzájemné vlastnosti mezi
+množinou $P_{\mathcal{D}}$ a operátorem $C_{\mathcal{D}}$.
+
+\begin {remark}
+  Fakt, že $|T| \leq |T'|$ intuitivně chápeme, ale přesnou
+  matematickou definicí je, že existuje injektivní zobrazení $f:T
+  \rightarrow T'$. Pro připomenutí, zobrazení $f$ je injektivní,
+  jestliže pro každé $x_1,x_2\in T$ platí, že pokud $f(x_1)=f(x_2)$,
+  pak $x_1=x_2$, nebo-li neexistují dva prvky, které se zobrazí na to
+  samé, a tedy pro konečné množiny platí, že $T$ má menší nebo stejný
+  počet prvků jako $T'$. Této definice využijeme u důkazu, že GD báze
+  je minimální.
+\end {remark}
+
+Jednou ze základních vlastností pseudo-uzávěrů je, že přidáme-li jeden
+z nich do uzávěrového systému generovaným operátorem
+$C_{\mathcal{D}}$, pak je výsledná množina zase uzávěrovým systémem.
+
+\begin{theorem}
+  Pokud $P \in P_{\mathcal{D}}$ a $A \subseteq R$ tak, že $P
+  \not\subseteq C_{\mathcal{D}}(A)$, pak $C_{\mathcal{D}}(A) \cap P =
+  C_{\mathcal{D}}(C_{\mathcal{D}}(A) \cap P)$.
+\end{theorem}
+
+\begin{proof}
+  Předpokládejme, že $P \not\subseteq C_{\mathcal{D}}(A)$ a tedy $P
+  \not\subseteq C_{\mathcal{D}}(A) \cap P$. Nyní stačí ukázat, že
+  $\mathcal{D}_{C_{\mathcal{D}}(A) \cap P}$ je modelem $T$, z čehož
+  pak plyne $C_{\mathcal{D}}(A) \cap P \in \mathcal{M}_T$ a tedy, že
+  $C_{\mathcal{D}}(A) \cap P = C_{\mathcal{D}}(C_{\mathcal{D}}(A) \cap
+  P)$.
+
+  Vezmeme libovolnou $Q \in P_{\mathcal{D}}$ tak, že $Q \subseteq
+  C_{\mathcal{D}}(A) \cap P$ a prokážeme, že $C_{\mathcal{D}}(Q)
+  \subseteq C_{\mathcal{D}}(A) \cap P$. K tomu nám postačí fakt, že
+  $C_{\mathcal{D}}(Q)$ je podmnožinou obou množin. Z předpokladů $Q
+  \subseteq C_{\mathcal{D}}(A) \cap P$ a $P \not\subseteq
+  C_{\mathcal{D}}(A)$ nutně plyne, že $Q \subset P$, a tedy z definice
+  $P_{\mathcal{D}}$ pak $C_{\mathcal{D}}(Q) \subseteq P$. Druhý fakt
+  je už jednoduchý, jelikož z předpokladu nutně plyne 
+  $Q \subseteq C_{\mathcal{D}}(A)$ a tedy využitím monotonie a
+  idempotence operátoru $C_{\mathcal{D}}$ dostaneme
+  $C_{\mathcal{D}}(Q) \subseteq C_{\mathcal{D}}(C_{\mathcal{D}}(A)) =
+  C_{\mathcal{D}}(A)$.
+\end{proof}
+
+Díky této vlastnosti můžeme dát do korespondence FZ GD báze a
+libovolné jiné báze. Přesněji, zaručí nám existenci injektivního
+zobrazení z množiny $P_{\mathcal{D}}$ do libovolné báze.
+
+\begin{theorem}
+  Nechť $T$ je báze $\mathcal{D}$. Potom pro každou $P \in
+  P_{\mathcal{D}}$ existuje $A \Rightarrow B \in T$ taková, že
+  $C_{\mathcal{D}}(A) = C_{\mathcal{D}}(P)$ a $\mathcal{D}_P
+  \not\models A \Rightarrow B$.
+\end{theorem}
+\begin{proof}
+  Nechť $P \in P_{\mathcal{D}}$. Z toho plyne, že $P \neq
+  C_{\mathcal{D}}(P)$ a jelikož $T$ je báze, máme taky $P \not\in
+  \mathcal{M}_T$, tedy existuje $A \Rightarrow B \in T$ tak, že
+  $\mathcal{D}_P \not\models A \Rightarrow B$. Nyní ukážeme, že
+  $C_{\mathcal{D}}(A) = C_{\mathcal{D}}(P)$. \\
+  
+  "$\subseteq$": Jestliže $\mathcal{D}_P \not\models A \Rightarrow B$,
+  pak nutně $A\subseteq P$ a zbytek plyne z monotonie operátoru
+  $C_{\mathcal{D}}$. \\
+
+  "$\supseteq$": Stačí dokázat, že $P\subseteq C_{\mathcal D}(A)$,
+  protože zbytek plyne z monotonie a idempotence operátoru
+  $C_{\mathcal D}$. Tvrzení dokážeme sporem, tedy předpokládejme, že
+  platí $P\not\subseteq C_{\mathcal D}(A)$. Jelikož $A\Rightarrow B\in
+  T$, pak $T\models A\Rightarrow B$, dále pak $B\subseteq
+  C_{\mathcal{D}}(A) = [A]_T$, protože $T$ je báze. Dalším je, že
+  $B\not\subseteq P$, protože $\mathcal{D}_P \not\models A \Rightarrow
+  B$. Dohromady to znamená, že $C_{\mathcal{D}}(A) \not\subseteq P$, a
+  když k tomu přidáme ještě předpoklad $P\not\subseteq C_{\mathcal
+    D}(A)$ zjistíme, že $C_{\mathcal D}(A) \cap P \subset C_{\mathcal
+    D}(A)$. Ze stejného předpokladu máme $A\subseteq P$, tedy
+  $C_{\mathcal D}(A)\subseteq C_{\mathcal D}(P)$. Navíc $A \subseteq
+  C_{\mathcal D}(A)$, což s předchozím dává $A\subseteq C_{\mathcal
+    D}(A) \cap P$. Monotonií dostaneme $C_{\mathcal D}(A)\subseteq
+  C_{\mathcal D}(C_{\mathcal D}(A) \cap P)$ a díky předchozí větě
+  $C_{\mathcal D}(A)\subseteq C_{\mathcal D}(A) \cap P$, což je ale v
+  rozporu s tím, že $C_{\mathcal D}(A) \cap P \subset C_{\mathcal
+    D}(A)$.
+\end{proof}
+
+Další vlastnost koresponduje s tou, kterou jsme nazvali
+základní. Přidáme-li do uzávěrového systému některé dva
+pseudo-uzávěry, zůstane pořád uzávěrovým systémem.
+
+\begin{theorem}
+  Pokud $P_1, P_2 \in P_{\mathcal{D}}$, $P_1 \not\subseteq P_2$ a $P_2
+  \not\subseteq P_1$, pak $C_{\mathcal{D}} (P_1 \cap P_2) = P_1 \cap
+  P_2$.
+\end{theorem}
+
+\begin{proof}
+  Nejdříve položme 
+  \begin {align*}
+  T_1 &= GD(\mathcal D) \setminus \{P_1 \Rightarrow C_{\mathcal{D}}(P_1)\}, \\
+  T_2 &= GD(\mathcal D) \setminus \{P_2 \Rightarrow C_{\mathcal{D}}(P_2)\}.
+  \end {align*}
+  Pak z definice $\mathcal P_{\mathcal D}$ máme, že
+  $\mathcal{D}_{P_1}$ je modelem $T_1$ a $\mathcal{D}_{P_2}$ je
+  modelem $T_2$. Tím spíš jsou pak obě relace modely $T_1\cap
+  T_2$. Tím pádem i $\mathcal{D}_{P_1 \cap P_2}$ musí být model $T_1
+  \cap T_2$, protože $\mathcal{M}_{T_1 \cap T_2}$, je uzávěrový
+  systém. Navíc $\mathcal{D}_{P_1 \cap P_2}$ je i modelem $T_1$,
+  protože z předpokladu $P_2 \not\subseteq P_1$ plyne $P_2
+  \not\subseteq P_1\cap P_2$. To samé platí i pro $T_2$, tedy
+  $\mathcal{D}_{P_1 \cap P_2}$ je modelem $T_1 \cup T_2 = GD(\mathcal
+  D)$. To znamená, že $P_1 \cap P_2 = [P_1 \cap P_2]_{GD(\mathcal
+    D)}$, a jelikož $GD(\mathcal D)$ je navíc báze $\mathcal D$, máme
+  $[P_1 \cap P_2]_{GD(\mathcal D)} = C_{\mathcal D}(P_1 \cap
+  P_2)$. Dohromady tedy $C_{\mathcal{D}}(P_1 \cap P_2) = P_1 \cap
+  P_2$.
+\end{proof}
+
+Než přistoupíme k důkazu, že GD báze je minimální vzhledem k počtu FZ,
+je potřeba se zamyslet Použitím předchozích vlastností můžeme dokázat
+následující tvrzení.
+
+\begin{theorem}
+  GD báze $\mathcal{D}$ je minimální báze $\mathcal{D}$.
+\end{theorem}
+
+\begin{proof}
+  K prokázání tvrzení nám stačí pro libovolnou bázi $\mathcal{D}$,
+  označme ji $T$, najít injektivní zobrazení $f : \mathcal P_{\mathcal{D}}
+  \rightarrow T$. Z předchozích tvrzení víme, že pro každou $P \in
+  \mathcal P_{\mathcal{D}}$ existuje $A \Rightarrow B \in T$ tak, že platí
+  $C_{\mathcal{D}}(A) = C_{\mathcal{D}}(P)$ a $\mathcal{D}_P
+  \not\models A \Rightarrow B$. Položme tedy $f(P)$ rovno takovéto
+  $A\Rightarrow B$ a ukážeme, že se jedná o injektivní zobrazení.
+
+  Nechť $P_1$ a $P_2$ jsou prvky $\mathcal P_{\mathcal D}$ takové, že
+  $f(P_1) = f(P_2)$. Z předchozí věty jsou tyto obrazy podle $f$ rovny
+  $A\Rightarrow B\in T$ a platí, že $C_{\mathcal{D}}(P_1) =
+  C_{\mathcal{D}}(A) = C_{\mathcal{D}}(P_2)$. Nyní není možné, aby
+  $P_1 \subset P_2$. Vskutku, kdyby to tak bylo, dle definice
+  $\mathcal P_{\mathcal D}$ bychom měli $C_{\mathcal{D}}(P_1)
+  \subseteq P_2$ a $P_2\neq C_{\mathcal{D}}(P_2)$, což spolu s
+  extenzivitou $C_{\mathcal D}$ dává $C_{\mathcal{D}}(P_1)\subset
+  C_{\mathcal{D}}(P_2)$. To je však v rozporu s předchozím. Stejně tak
+  nemůže nastat $P_2 \subset P_1$. Navíc také nemůže nastat $P_2 \neq
+  P_1$, jinak bychom měli spor s $C_{\mathcal{D}}(P_1) =
+  C_{\mathcal{D}}(A)$, protože dle předchozí věty by pak
+  $C_{\mathcal{D}}(P_1\cap P_2) = P_1\cap P_2$ a spolu s definicí $f$
+  bychom měli $A\subseteq P_1$ a $A\subseteq P_2$, tedy $A\subseteq
+  P_1\cap P_2$, což by pak použitím monotonie operátoru
+  $C_{\mathcal{D}}$ dalo $C_{\mathcal{D}}(A)\subseteq P_1\cap
+  P_2\subset C_{\mathcal{D}}(P_1)$. Jedinná možnost je tedy, že $P_1 =
+  P_2$, čímž jsme prokázali injektivitu $f$.
+\end{proof}
+
+Jedinnou otázkou teď je, jak takovouto bázi najít. K tomu nám bude
+sloužit jemně upravený operátor $\dots^{\infty}_{T}$.
+
+\begin {definition}
+  Pro $M\subseteq R$ zavedeme následující posloupnost podmnožin
+  $R$:
+  \begin {align*}
+    M^{(0)}_{GD(\mathcal{D})} &= M,\\
+    M^{(i+1)}_{GD(\mathcal{D})} &=
+    \bigcup\{B\mid A\Rightarrow B\in GD(\mathcal{D}) \text { a }
+    A\subset M^{(i)}_{GD(\mathcal{D})}\},\\
+    M^{(\infty)}_{GD(\mathcal{D})} &=
+    \bigcup_{i=0}^{\infty}M^{(i)}_{GD(\mathcal{D})}.
+  \end {align*}
+\end {definition}
+
+I v tomto případě je jasné, že $M^{(\infty)}_{GD(\mathcal{D})}$ je
+konečná, protože $R$ je konečná a díky tomu se růst posloupnosti někdy
+zastaví.
+
+\begin {exercise}
+  \begin {enumerate}
+  \item Dokažte, že $\dots^{(\infty)}_{GD(\mathcal{D})}$ je uzávěrový
+    operátor na $R$.
+  \item Pro každou množinu $M\subseteq R= \{a,b,c,d,e,f,g,h\}$ a
+    teorii
+    \begin {align*}
+      T= \{
+      &\{a,b\}\Rightarrow \{c\},\\
+      &\{b\}\Rightarrow \{d\},\\
+      &\{c,d\}\Rightarrow \{e\},\\
+      &\{c,e\}\Rightarrow \{g,h\},\\
+      &\{g\}\Rightarrow \{a\}\}
+    \end {align*}
+    vypočtěte $M^{(\infty)}_{GD(\mathcal{D})}$.
+  \item Dokažte, že platí $M^{(\infty)}_{GD(\mathcal{D})} = M$ právě, když
+    platí buď $M = C_{\mathcal{D}}(M)$ nebo $M\in \mathcal P_{\mathcal D}$.
+  \item Naprogramujte operátor $\dots^{(\infty)}_{GD(\mathcal{D})}$.
+    (hint: inspirujte se algoritmem \texttt {CLOSURE})
+  \item Můžete zkusit naprogramovat generování $GD(\mathcal{D})$.
+    (hint: jednoduše bruteforce procházení všech podmnožin $R$) 
+  \end {enumerate}
+\end {exercise}
+
+%% Nyní je však na místě se ptát, jak nám ale pomůže s výpočtem
+%% $GD(\mathcal{D})$, když ji potřebujeme znát. Trik je ve využití
+%% $\subset$, které se vyskytuje u výpočtu, nebo-li k výpočtu 
+
+%% \begin {remark}
+  
+%% \end {remark}
+%% Díky němu je vždy potřeba
+%% znát pouze předchozí 
+
+%% Definice $\mathcal P_{\mathcal D}$ je sice rekurzivní, ale závisí vždy
+%% pouze na menších nám žádný návod nedává a ještě je rekurzivní.
 
 \end {document}
