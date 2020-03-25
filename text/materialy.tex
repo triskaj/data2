@@ -289,9 +289,9 @@ následující množinu.
   Pro relaci $\mathcal{D}$ nad $R$ uvažujeme množinu $P_{\mathcal{D}}
   \subseteq 2^R$, která je definovaná předpisem:
   
-  $$P_{\mathcal{D}} = \{ P \neq C_{\mathcal{D}}(P) \mid \forall Q \in
-  P_{\mathcal{D}}: \text{ pokud } Q \subset P \text{, pak }
-  C_{\mathcal{D}}(Q) \subseteq P \}.$$
+  $$ \mathcal P_{\mathcal{D}} = \{ P \neq C_{\mathcal{D}}(P) \mid
+  \forall Q \in \mathcal P_{\mathcal{D}}: \text{ pokud } Q \subset P
+  \text{, pak } C_{\mathcal{D}}(Q) \subseteq P \}. $$
 \end{definition}
 
 Prvkům z této množiny se někdy říká pseudo-uzávěry. Koresponduje to s
@@ -302,7 +302,7 @@ vzhledem ke všem ostatním prvkům z této množiny.
   \underline {GD bází} $\mathcal D$ nazveme teorii definovanou
   následujícím předpisem:
   $$GD(\mathcal D)= \{P \Rightarrow C_{\mathcal{D}}(P) \mid P \in
-  P_{\mathcal{D}}\}.$$
+  \mathcal P_{\mathcal{D}}\}.$$
 \end {definition}
 
 \begin {remark}
@@ -327,10 +327,10 @@ vzhledem ke všem ostatním prvkům z této množiny.
   
   "$\Leftarrow$": Nechť $M \in \mathcal{M}_T$, pak $\mathcal{D}_M
   \models P \Rightarrow C_{\mathcal{D}}(P)$ pro každou $P \in
-  P_{\mathcal{D}}$, což znamená, že pokud $P \subseteq M$, pak
+  \mathcal P_{\mathcal{D}}$, což znamená, že pokud $P \subseteq M$, pak
   $C_{\mathcal{D}}(P) \subseteq M$. Nyní sporem dokážeme, že $M =
   C_{\mathcal{D}}(M)$. Nechť tedy $M \neq C_{\mathcal{D}}(M)$. Pak
-  díky předchozímu je $M \in P_{\mathcal{D}}$, a tedy z předpokladu
+  díky předchozímu je $M \in \mathcal P_{\mathcal{D}}$, a tedy z předpokladu
   plyne, že $\mathcal{D}_M \models M \Rightarrow
   C_{\mathcal{D}}(M)$. Jelikož ale $M \subseteq M$, pak
   $C_{\mathcal{D}}(M) \subseteq M$. Navíc z extenzivity uzávěrového
@@ -344,11 +344,12 @@ vzhledem ke všem ostatním prvkům z této množiny.
 \begin {proof}
   Vezmeme libovolnou $T\subset GD(\mathcal D)$ a ukážeme, že $T$ není
   báze. Díky předpokladu existuje $P \Rightarrow C_{\mathcal{D}}(P)\in
-  GD(\mathcal D)$, která není v $T$. Z definice $P_{\mathcal{D}}$ je
-  vidět, že $\mathcal{D}_P$ je modelem $T$. Jelikož však není modelem
-  $GD(\mathcal D)$, nemohou být $T$ a $GD(\mathcal D)$ sémanticky
-  ekvivalentní, což dohromady s tím, že $GD(\mathcal D)$ je báze
-  $\mathcal D$ dává, že $T$ není báze $\mathcal D$.
+  GD(\mathcal D)$, která není v $T$. Z definice $\mathcal
+  P_{\mathcal{D}}$ je vidět, že $\mathcal{D}_P$ je modelem
+  $T$. Jelikož však není modelem $GD(\mathcal D)$, nemohou být $T$ a
+  $GD(\mathcal D)$ sémanticky ekvivalentní, což dohromady s tím, že
+  $GD(\mathcal D)$ je báze $\mathcal D$ dává, že $T$ není báze
+  $\mathcal D$.
 \end {proof}
 
 Jako motivaci pro zbytek sekce vezmeme následující příklad.
@@ -372,7 +373,7 @@ kardinalitou, definujeme následující pojem.
 
 Ukazuje se, že GD báze je také minimální bazí, ale abychom byli
 schopni to potvrdit, je potřeba prozkoumat vzájemné vlastnosti mezi
-množinou $P_{\mathcal{D}}$ a operátorem $C_{\mathcal{D}}$.
+množinou $\mathcal P_{\mathcal{D}}$ a operátorem $C_{\mathcal{D}}$.
 
 \begin {remark}
   Fakt, že $|T| \leq |T'|$ intuitivně chápeme, ale přesnou
@@ -390,7 +391,7 @@ z nich do uzávěrového systému generovaným operátorem
 $C_{\mathcal{D}}$, pak je výsledná množina zase uzávěrovým systémem.
 
 \begin{theorem}
-  Pokud $P \in P_{\mathcal{D}}$ a $A \subseteq R$ tak, že $P
+  Pokud $P \in \mathcal P_{\mathcal{D}}$ a $A \subseteq R$ tak, že $P
   \not\subseteq C_{\mathcal{D}}(A)$, pak $C_{\mathcal{D}}(A) \cap P =
   C_{\mathcal{D}}(C_{\mathcal{D}}(A) \cap P)$.
 \end{theorem}
@@ -403,32 +404,32 @@ $C_{\mathcal{D}}$, pak je výsledná množina zase uzávěrovým systémem.
   $C_{\mathcal{D}}(A) \cap P = C_{\mathcal{D}}(C_{\mathcal{D}}(A) \cap
   P)$.
 
-  Vezmeme libovolnou $Q \in P_{\mathcal{D}}$ tak, že $Q \subseteq
-  C_{\mathcal{D}}(A) \cap P$ a prokážeme, že $C_{\mathcal{D}}(Q)
-  \subseteq C_{\mathcal{D}}(A) \cap P$. K tomu nám postačí fakt, že
-  $C_{\mathcal{D}}(Q)$ je podmnožinou obou množin. Z předpokladů $Q
-  \subseteq C_{\mathcal{D}}(A) \cap P$ a $P \not\subseteq
-  C_{\mathcal{D}}(A)$ nutně plyne, že $Q \subset P$, a tedy z definice
-  $P_{\mathcal{D}}$ pak $C_{\mathcal{D}}(Q) \subseteq P$. Druhý fakt
-  je už jednoduchý, jelikož z předpokladu nutně plyne 
-  $Q \subseteq C_{\mathcal{D}}(A)$ a tedy využitím monotonie a
-  idempotence operátoru $C_{\mathcal{D}}$ dostaneme
+  Vezmeme libovolnou $Q \in \mathcal P_{\mathcal{D}}$ tak, že $Q
+  \subseteq C_{\mathcal{D}}(A) \cap P$ a prokážeme, že
+  $C_{\mathcal{D}}(Q) \subseteq C_{\mathcal{D}}(A) \cap P$. K tomu nám
+  postačí fakt, že $C_{\mathcal{D}}(Q)$ je podmnožinou obou množin. Z
+  předpokladů $Q \subseteq C_{\mathcal{D}}(A) \cap P$ a $P
+  \not\subseteq C_{\mathcal{D}}(A)$ nutně plyne, že $Q \subset P$, a
+  tedy z definice $\mathcal P_{\mathcal{D}}$ pak $C_{\mathcal{D}}(Q)
+  \subseteq P$. Druhý fakt je už jednoduchý, jelikož z předpokladu
+  nutně plyne $Q \subseteq C_{\mathcal{D}}(A)$ a tedy využitím
+  monotonie a idempotence operátoru $C_{\mathcal{D}}$ dostaneme
   $C_{\mathcal{D}}(Q) \subseteq C_{\mathcal{D}}(C_{\mathcal{D}}(A)) =
   C_{\mathcal{D}}(A)$.
 \end{proof}
 
 Díky této vlastnosti můžeme dát do korespondence FZ GD báze a
 libovolné jiné báze. Přesněji, zaručí nám existenci injektivního
-zobrazení z množiny $P_{\mathcal{D}}$ do libovolné báze.
+zobrazení z množiny $\mathcal P_{\mathcal{D}}$ do libovolné báze.
 
 \begin{theorem}
-  Nechť $T$ je báze $\mathcal{D}$. Potom pro každou $P \in
+  Nechť $T$ je báze $\mathcal{D}$. Potom pro každou $P \in \mathcal
   P_{\mathcal{D}}$ existuje $A \Rightarrow B \in T$ taková, že
   $C_{\mathcal{D}}(A) = C_{\mathcal{D}}(P)$ a $\mathcal{D}_P
   \not\models A \Rightarrow B$.
 \end{theorem}
 \begin{proof}
-  Nechť $P \in P_{\mathcal{D}}$. Z toho plyne, že $P \neq
+  Nechť $P \in \mathcal P_{\mathcal{D}}$. Z toho plyne, že $P \neq
   C_{\mathcal{D}}(P)$ a jelikož $T$ je báze, máme taky $P \not\in
   \mathcal{M}_T$, tedy existuje $A \Rightarrow B \in T$ tak, že
   $\mathcal{D}_P \not\models A \Rightarrow B$. Nyní ukážeme, že
@@ -463,9 +464,9 @@ základní. Přidáme-li do uzávěrového systému některé dva
 pseudo-uzávěry, zůstane pořád uzávěrovým systémem.
 
 \begin{theorem}
-  Pokud $P_1, P_2 \in P_{\mathcal{D}}$, $P_1 \not\subseteq P_2$ a $P_2
-  \not\subseteq P_1$, pak $C_{\mathcal{D}} (P_1 \cap P_2) = P_1 \cap
-  P_2$.
+  Pokud $P_1, P_2 \in \mathcal P_{\mathcal{D}}$, $P_1 \not\subseteq
+  P_2$ a $P_2 \not\subseteq P_1$, pak $C_{\mathcal{D}} (P_1 \cap P_2)
+  = P_1 \cap P_2$.
 \end{theorem}
 
 \begin{proof}
