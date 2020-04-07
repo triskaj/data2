@@ -572,17 +572,75 @@ zastaví.
   \end {enumerate}
 \end {exercise}
 
-%% Nyní je však na místě se ptát, jak nám ale pomůže s výpočtem
-%% $GD(\mathcal{D})$, když ji potřebujeme znát. Trik je ve využití
-%% $\subset$, které se vyskytuje u výpočtu, nebo-li k výpočtu 
+Nyní je však na místě se ptát, jak nám ale pomůže s výpočtem
+$GD(\mathcal{D})$, když ji potřebujeme znát, abychom mohli spočítat
+pevné body operátoru $\dots^{(\infty)}_{GD(\mathcal{D})}$. Trik je ve
+využití $\subset$, které se vyskytuje u výpočtu, nebo-li k výpočtu je
+potřeba znát pouze všechny ostré podmnožiny. Stačí tedy hledat pevné
+body našeho operátoru v pořadí, které je obohacením relace
+podmnožinovosti.
 
-%% \begin {remark}
-  
-%% \end {remark}
-%% Díky němu je vždy potřeba
-%% znát pouze předchozí 
+Nyní zavedeme úplné uspořádání na podmnožinách $R$ a k tomu účelu
+seřadíme prvky $R$ a pro jednoduchost je stotožníme s čísly, tedy
+$R=\{1,2,\dots,n\}$.
 
-%% Definice $\mathcal P_{\mathcal D}$ je sice rekurzivní, ale závisí vždy
-%% pouze na menších nám žádný návod nedává a ještě je rekurzivní.
+\begin {definition}
+  Pro $A,B\subseteq R$ a $i\in R$ položíme $A<_iB$, pokud
+  platí, že $i\in B\setminus A$ a $A\cap \{1,\dots,i-1\} = B\cap
+  \{1,\dots,i-1\}$. Navíc $A<B$ pokud existuje $i\in R$ tak, že
+  $A<_iB$.
+\end {definition}
+\begin {remark}
+  Všimněme si, že pokud $A\subset B$, pak nutně $A<B$.
+\end {remark}
 
+Tato relace nám definuje lexikografické uspořádání, které je úplné,
+tedy pro každé dvě $A,B\in R$ máme buď $A<B$ nebo $B<A$. V tomto
+pořadí, pak budeme hledat pevné body operátoru
+$\dots^{(\infty)}_{GD(\mathcal{D})}$.
+
+\begin {example}
+  Mějme $R= \{1,2,3,4,5,6\}$ a uvažujme množiny $$\{1\}, \{2\},
+  \{2,3\}, \{3,4,5\}, \{3,6\}, \{1,4,5\}.$$
+
+  Dle definice můžeme tyto množiny uspořádat následovně:
+  $$ \{3,6\} <_4 \{3,4,5\} <_2 \{2\} <_3 \{2,3\} <_1 \{1\} <_4
+  \{1,4,5\}.$$
+\end {example}
+
+Nyní definujeme operátor s jehož pomocí, pak budeme hledat pevné body
+uzávěrového operátoru. Algoritmu, který pak vzejde z tvrzení o tomto
+operátoru, se říká \texttt {NextClosure}.
+
+\begin {definition}
+  Pro $A\subseteq R$, $i\in R$ a uzávěrový operátor $c$ na $R$
+  položíme
+  $$ A\oplus_c i = C_{\mathcal D}((A\cap \{1,\dots,i-1\}) \cup \{i\}).$$
+\end {definition}
+
+\begin {theorem}
+  Nejmenší pevný bod $A^+$ uzávěrového operátoru $c$ na $R$, který je
+  větší než $A\subseteq R$ vzhledem k uspořádání $<$, je dán předpisem
+  $$ B^+ = B\oplus_c i,$$
+  kde $i$ je největší číslo takové, že $B<_i B\oplus_c i$.
+\end {theorem}
+
+Důkaz přeskočíme a zaměříme se na význam předchozí věty. Abychom našli
+všechny pevné body uzávěrového operátoru
+$\dots^{(\infty)}_{GD(\mathcal{D})}$, stačí uzavřít prázdnou množinu a
+s tímto uzávěrem začneme aplikovat předchozí větu, která nám říká, že
+dostaneme nejmenší pevný bod větší než ten předchozí, a tedy budeme to
+dělat tak dlouho, dokud nedojdeme k $R$.
+
+Tímto jsme získali vše potřebné pro vytvoření algoritmu
+\texttt{MinBase}. Stačí tedy začít s prázdnou teorií $T$ a hledat
+pevné body operátoru $\dots^{(\infty)}_{T}$ pomocí
+\texttt{NextClosure} a každý takový $A$ otestovat, jestli je pevným
+bodem operátoru $C_{\mathcal{D}}$, a pokud ne, přidáme $A\Rightarrow
+C_{\mathcal{D}}(A)$ do $T$. Díky uspořádání máme zajištěno, že v $T$
+budeme mít už všechny potřebné FZ.
+
+\begin {exercise}
+  Naprogramujte algoritmus \texttt {MinBase}.
+\end {exercise}
 \end {document}
