@@ -773,12 +773,12 @@ Navíc uvažujme lexikografické uspořádání na atributech. Pak by
     T_3&=\{\emptyset\Rightarrow \{e\}\},
        &\text{ protože } \{d,e\} = C_{\mathcal D}(\{d,e\})=\{d,e\}\\
     M_3&=\texttt{NextClosure}(\dots_{T_3}^{(\infty)}, \{d,e\})=\{c,e\}\\
-    T_4&=\{\emptyset\Rightarrow \{e\}\},
-       &\text{ protože } \{c,e\} = C_{\mathcal D}(\{c,e\})=\{c,e\}\\
-    M_4&=\texttt{NextClosure}(\dots_{T_4}^{(\infty)}, \{c,e\})=\{c,d,e\}\\
-    T_5&=\{\emptyset\Rightarrow \{e\}, \{c,d,e\}\Rightarrow \{a,b,c,d,e\}\},
-       &\text{ protože } \{c,d,e\} \neq C_{\mathcal D}(\{c,d,e\})=\{a,b,c,d,e\}\\
-    M_5&=\texttt{NextClosure}(\dots_{T_5}^{(\infty)}, \{c,d,e\})=\{b,e\} \\
+    T_4&=\{\emptyset\Rightarrow \{e\}, \{c,e\}\Rightarrow \{a,b,c,d,e\}\},
+       &\text{ protože } \{c,e\} \neq C_{\mathcal D}(\{c,e\})=\{a,b,c,d,e\}\\
+    M_4&=\texttt{NextClosure}(\dots_{T_4}^{(\infty)}, \{c,e\})=\{b,e\}\\
+    T_5&=\{\emptyset\Rightarrow \{e\}, \{c,e\}\Rightarrow \{a,b,c,d,e\}\},
+       &\text{ protože } \{b,e\} = C_{\mathcal D}(\{b,e\})=\{b,e\}\\
+    M_5&=\texttt{NextClosure}(\dots_{T_5}^{(\infty)}, \{b,e\})=\{b,d,e\} \\
     \vdots
   \end{align*}
     Jako cvičení můžete pokračovat, dokud nedojdete k $M_i=R$.
