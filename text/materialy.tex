@@ -591,7 +591,8 @@ $R=\{1,2,\dots,n\}$.
   $A<_iB$.
 \end {definition}
 \begin {remark}
-  Všimněme si, že pokud $A\subset B$, pak nutně $A<B$.
+  Všimněme si, že pokud $A\subset B$, pak nutně $A<B$. Z toho pak
+  plyne, že $\emptyset$ je vždy nejmenším prvkem v tomto uspořádání.
 \end {remark}
 
 Tato relace nám definuje lexikografické uspořádání, které je úplné,
@@ -618,10 +619,37 @@ operátoru, se říká \texttt {NextClosure}.
 \end{remark}
 
 \begin {definition}
-  Pro $A\subseteq R$, $i\in R$ a uzávěrový operátor $c$ na $R$
-  položíme
-  $$ A\oplus_c i = C_{\mathcal D}((A\cap \{1,\dots,i-1\}) \cup \{i\}).$$
+  Pro $A\subseteq R$, $i\in R$ a uzávěrový operátor $c$ položíme
+  $$ A\oplus_c i = c((A\cap \{1,\dots,i-1\}) \cup \{i\}).$$
 \end {definition}
+
+\begin {example}
+  Mějme $R= \{a,b,c,d,e\}$ a uvažujme teorii
+  \begin{align*}
+    T = \{
+    &\emptyset\Rightarrow \{e\},\\
+    &\{a,b,e\}\Rightarrow \{a,b,d,e\},\\
+    &\{c,d,e\}\Rightarrow \{a,b,c,d,e\}\}.
+  \end{align*}
+
+  Navíc budeme uvažovat lexikografické uspořádání na řetězcích,
+  abychom mohli využít předchozí definici. To znamená, že $a<b<c<d<e$.
+  Pak podle předchozí definice máme
+  \begin{align*}
+    \{c,d\} \oplus_{[\dots]_{T}} a
+    &= [(\{c,d\}\cap\emptyset)\cup\{a\}]_{T} =
+      [\{a\}]_{T} = \{a,e\} \\
+    \{a,d\} \oplus_{[\dots]_{T}} c
+    &= [(\{a,d\}\cap\{a,b\})\cup \{c\}]_{T} =
+      [\{a,c\}]_{T} = \{a,c,e\} \\
+    \{a,b,d\} \oplus_{[\dots]_{T}} d
+    &= [(\{a,b,d\}\cap\{a,b,c\})\cup \{d\}]_{T} =
+      [\{a,b,d\}]_{T} = \{a,b,d,e\} \\
+    \emptyset \oplus_{[\dots]_{T}} d
+    &= [(\emptyset\cap\{a,b,c\})\cup \{d\}]_{T} =
+      [\{d\}]_{T} = \{d,e\} 
+  \end{align*}
+\end{example}
 
 \begin {theorem}
   Nejmenší pevný bod $A^+$ uzávěrového operátoru $c$ na $R$, který je
@@ -631,19 +659,130 @@ operátoru, se říká \texttt {NextClosure}.
 \end {theorem}
 
 Důkaz přeskočíme a zaměříme se na význam předchozí věty. Abychom našli
-všechny pevné body uzávěrového operátoru
-$\dots^{(\infty)}_{GD(\mathcal{D})}$, stačí uzavřít prázdnou množinu a
-s tímto uzávěrem začneme aplikovat předchozí větu, která nám říká, že
-dostaneme nejmenší pevný bod větší než ten předchozí, a tedy budeme to
-dělat tak dlouho, dokud nedojdeme k $R$.
+všechny pevné body libovolného uzávěrového operátoru stačí začít s
+prázdnou množinout a postupně hledat nejmenší větší uzávěry, což je
+vlastně to, co dělá algoritmus \texttt{NextClosure}.
 
-Tímto jsme získali vše potřebné pro vytvoření algoritmu
-\texttt{MinBase}. Stačí tedy začít s prázdnou teorií $T$ a hledat
-pevné body operátoru $\dots^{(\infty)}_{T}$ pomocí
-\texttt{NextClosure} a každý takový $A$ otestovat, jestli je pevným
-bodem operátoru $C_{\mathcal{D}}$, a pokud ne, přidáme $A\Rightarrow
-C_{\mathcal{D}}(A)$ do $T$. Díky uspořádání máme zajištěno, že v $T$
-budeme mít už všechny potřebné FZ.
+\begin{example}
+  Uvažujme stejnou teorii a uspořádání jako v předchozím příkladu. Pak
+  algoritmus \texttt{NextClosure} bude počítat následující:
+  \begin{align*}
+    \emptyset \oplus_{[\dots]_{T}} e
+    &= [(\emptyset\cap\{a,b,c,d\})\cup\{e\}]_{T} =
+      [\{e\}]_{T} = \{e\}\\
+    &(\emptyset<_e \{e\})\\
+    \texttt{NextClosure}&([\dots]_{T},\emptyset)=\{e\}\\    
+    \{e\} \oplus_{[\dots]_{T}} d
+    &= [(\{e\}\cap \{a,b,c\})\cup\{d\}]_{T} =
+      [\{d\}]_{T} = \{d,e\}\\
+    &(\{e\}<_d \{d,e\})\\
+    \texttt{NextClosure}&([\dots]_{T},\{e\}=\{d,e\}\\    
+    \{d,e\} \oplus_{[\dots]_{T}} c
+    &= [(\{d,e\}\cap \{a,b\})\cup\{c\}]_{T} =
+      [\{c\}]_{T} = \{c,e\}\\
+    &(\{d,e\}<_c \{c,e\})\\
+    \texttt{NextClosure}&([\dots]_{T},\{d,e\})=\{c,e\}\\
+    \{c,e\} \oplus_{[\dots]_{T}} d
+    &= [(\{c,e\}\cap \{a,b,c\})\cup\{d\}]_{T} =
+      [\{c,d\}]_{T} = \{a,b,c,d,e\}\\
+    &(\{c,e\}\not<_d \{a,b,c,d,e\})\\
+    \{c,e\} \oplus_{[\dots]_{T}} b
+    &= [(\{c,e\}\cap \{a\})\cup\{b\}]_{T} =
+      [\{b\}]_{T} = \{b,e\}\\
+    &(\{c,e\}<_b \{b,e\})\\
+    \texttt{NextClosure}&([\dots]_{T},\{c,e\})=\{b,e\}\\
+    \{b,e\} \oplus_{[\dots]_{T}} d
+    &= [(\{b,e\}\cap \{a,b,c\})\cup\{d\}]_{T} =
+      [\{b,d\}]_{T} = \{b,d,e\}\\
+    &(\{b,e\}<_d \{d\})\\
+    \texttt{NextClosure}&([\dots]_{T},\{b,e\})=\{d\}\\
+    \{b,d,e\} \oplus_{[\dots]_{T}} c
+    &= [(\{b,d,e\}\cap \{a,b\})\cup\{c\}]_{T} =
+      [\{b,c\}]_{T} = \{b,c,e\}\\
+    &(\{b,d,e\}<_c \{b,c,e\})\\
+    \texttt{NextClosure}&([\dots]_{T},\{b,d,e\})=\{b,c,e\}\\
+    \{b,c,e\} \oplus_{[\dots]_{T}} d
+    &= [(\{b,c,e\}\cap \{a,b,c\})\cup\{d\}]_{T} =
+      [\{b,c,d\}]_{T} = \{a,b,c,d,e\}\\
+    &(\{b,c,e\}\not<_d \{a,b,c,d,e\})\\
+    \{b,c,e\} \oplus_{[\dots]_{T}} a
+    &= [(\{b,c,e\}\cap \emptyset)\cup\{a\}]_{T} =
+      [\{a\}]_{T} = \{a,e\}\\
+    &(\{b,c,e\}<_a \{a,e\})\\
+    \texttt{NextClosure}&([\dots]_{T},\{b,c,e\})=\{a,e\}\\
+    \vdots
+  \end{align*}  
+  Jak je vidět, vždy hledáme největší možný atribut, který lze
+  \uv{přičíst} k množině tak, aby byl výsledek větší.
+
+  Jako cvičení můžete pokračovat, dokud nedojdete k $R$.
+\end{example}
+
+My budeme chtít hledat pevné body operátoru
+$\dots^{(\infty)}_{GD(\mathcal{D})}$. Jelikož ale předem neznáme
+$GD(\mathcal D)$, musíme ji postupně budovat. Jak už jsme si řekli, k
+výpočtu uzávěru potřebujeme vždy pouze FZ z $GD(\mathcal D)$ s
+předpokladem ostře menším než daná množina. Navíc \texttt{NextClosure}
+počítá uzávěry v pořadí obohacujícím podmnožinovost a tím pádem při
+každém kroku už můžeme znát všechny tyto předpoklady.
+
+Algoritmus \texttt{MinBase} budeme formulovat jako posloupnost teorií
+a podmnožin $R$. Položíme $M_0=\emptyset$ a $T_0=\emptyset$ a další
+prvky posloupnosti definujeme následovně:
+
+\begin{align*}
+  T_{n+1}=&
+  \begin{cases}
+    T_n,
+    & \text{ pokud } M_n=C_{\mathcal D}(M_n) \text{ a}\\
+    T_n\cup\{M_n\Rightarrow C_{\mathcal D}(M_n)\}
+    & \text{ jinak.}
+  \end{cases}\\
+  M_{n+1} =&\texttt{ NextClosure}(\dots^{(\infty)}_{T_{n+1 }},M_n)
+\end{align*}
+
+Pro takhle sestavenou posloupnost platí, že je neklesající a navíc pro
+$i\in\mathbf N_0$, pro které platí, že $M_i=R$ máme
+$T_i=GD(\mathcal D)$.
+
+\begin{example}
+  Uvažujme relaci $D$ danou následující tabulkou:
+
+  \begin{center}
+  \begin{tabular}{c c c c c}
+    a & b & c & d & e \\
+    \hline
+    1 & 2 & 2 & 2 & 1 \\
+    3 & 2 & 5 & 1 & 1 \\
+    1 & 1 & 1 & 1 & 1 \\
+    2 & 1 & 4 & 3 & 1 \\
+    2 & 1 & 3 & 3 & 1 
+  \end{tabular}
+\end{center}
+Navíc uvažujme lexikografické uspořádání na atributech. Pak by
+\texttt{MinBase} počítal následující:
+  \begin{align*}
+    T_0&=\emptyset\\
+    M_0&=\emptyset\\
+    T_1&=\{\emptyset\Rightarrow \{e\}\},
+       &\text{ protože } \emptyset\neq C_{\mathcal D}(\emptyset)=\{e\}\\
+    M_1&=\texttt{NextClosure}(\dots_{T_1}^{(\infty)},\emptyset)=\{e\}\\
+    T_2&=\{\emptyset\Rightarrow \{e\}\},
+       &\text{ protože } \{e\} = C_{\mathcal D}(\{e\})=\{e\}\\
+    M_2&=\texttt{NextClosure}(\dots_{T_2}^{(\infty)}, \{e\})=\{d,e\}\\
+    T_3&=\{\emptyset\Rightarrow \{e\}\},
+       &\text{ protože } \{d,e\} = C_{\mathcal D}(\{d,e\})=\{d,e\}\\
+    M_3&=\texttt{NextClosure}(\dots_{T_3}^{(\infty)}, \{d,e\})=\{c,e\}\\
+    T_4&=\{\emptyset\Rightarrow \{e\}\},
+       &\text{ protože } \{c,e\} = C_{\mathcal D}(\{c,e\})=\{c,e\}\\
+    M_4&=\texttt{NextClosure}(\dots_{T_4}^{(\infty)}, \{c,e\})=\{c,d,e\}\\
+    T_5&=\{\emptyset\Rightarrow \{e\}, \{c,d,e\}\Rightarrow \{a,b,c,d,e\}\},
+       &\text{ protože } \{c,d,e\} \neq C_{\mathcal D}(\{c,d,e\})=\{a,b,c,d,e\}\\
+    M_5&=\texttt{NextClosure}(\dots_{T_5}^{(\infty)}, \{c,d,e\})=\{b,e\} \\
+    \vdots
+  \end{align*}
+    Jako cvičení můžete pokračovat, dokud nedojdete k $M_i=R$.
+\end{example}
 
 \begin {exercise}
   Naprogramujte algoritmus \texttt {MinBase}.
